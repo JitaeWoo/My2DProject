@@ -24,4 +24,12 @@ public class PlayerMovement : MonoBehaviour
 
         _rigid.velocity = moveVector;
     }
+
+    public void Jump()
+    {
+        Vector2 jumpVector = Vector2.up * Manager.Player.Stats.JumpPower;
+        jumpVector.x = _rigid.velocity.x;
+
+        _rigid.velocity = jumpVector;
+    }
 }

@@ -11,4 +11,9 @@ public class PlayerInput
 
         return new Vector2(x, y);
     }
+
+    public bool JumpInput()
+    {
+        return Input.GetKeyDown(KeyCode.Space);
+    }
 }

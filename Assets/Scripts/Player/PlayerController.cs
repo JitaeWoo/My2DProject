@@ -26,5 +26,10 @@ public class PlayerController : MonoBehaviour
         if (!_isControl) return;
 
         _movement.Move(_input.MoveInput());
+
+        if (_input.JumpInput())
+        {
+            _movement.Jump();
+        }
     }
 }
