@@ -6,7 +6,7 @@ public class PlayerManager : Singleton<PlayerManager>
 {
     [SerializeField] private PlayerStats _statsTemplate;
 
-    [HideInInspector] public PlayerStats Stats;
+    public PlayerStats Stats { get; private set; }
 
     private void Awake()
     {
