@@ -4,9 +4,11 @@ using UnityEngine;
 
 public static class Manager
 {
+    public static GameManager Game => GameManager.GetInstance();
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initailize()
     {
-
+        GameManager.CreateInstance();
     }
 }
