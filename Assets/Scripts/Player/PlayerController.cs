@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private void Init()
     {
+        Manager.Player.SetTransform(transform);
         _input = new PlayerInput();
         _movement = GetComponent<PlayerMovement>();
     }
