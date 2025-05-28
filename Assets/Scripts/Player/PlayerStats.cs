@@ -7,6 +7,8 @@ public class PlayerStats : ScriptableObject
 {
     public Stat<bool> IsJump;
 
+    public Vector2 Velocity;
+
     public float MoveSpeed;
     public float JumpPower;
 }

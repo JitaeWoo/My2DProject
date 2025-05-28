@@ -17,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
     }
 
+    private void Update()
+    {
+        Manager.Player.Stats.Velocity = _rigid.velocity;
+    }
+
     public void Move(Vector2 direction)
     {
         Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
