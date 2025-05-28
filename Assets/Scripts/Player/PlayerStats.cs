@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Scriptable Objects/PlayerStats", order = 1)]
 public class PlayerStats : ScriptableObject
 {
-    public Stat<bool> IsJump;
+    public Stat<bool> IsJump = new();
 
     public Vector2 Velocity;
 
