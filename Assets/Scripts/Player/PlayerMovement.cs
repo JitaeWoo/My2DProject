@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
-
     private Rigidbody2D _rigid;
 
     private void Awake()
@@ -21,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector2 direction)
     {
-        Vector2 moveVector = direction * _moveSpeed;
+        Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
         moveVector.y = _rigid.velocity.y;
 
         _rigid.velocity = moveVector;
