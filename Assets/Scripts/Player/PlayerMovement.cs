@@ -22,6 +22,24 @@ public class PlayerMovement : MonoBehaviour
         Manager.Player.Stats.Velocity = _rigid.velocity;
     }
 
+    private void OnEnable()
+    {
+        Manager.Player.Stats.IsWall.OnChanged += OnIsWall;
+    }
+
+    private void OnDisable()
+    {
+        Manager.Player.Stats.IsWall.OnChanged -= OnIsWall;
+    }
+
+    private void OnIsWall(bool value)
+    {
+        if (value)
+        {
+            _rigid.velocity = new Vector2(_rigid.velocity.x, 0);
+        }
+    }
+
     public void Move(Vector2 direction)
     {
         Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
