@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
         }
 
-        if(!Manager.Player.Stats.IsGround && !Manager.Player.Stats.IsJump.Value)
+        if(!Manager.Player.Stats.IsGround.Value && !Manager.Player.Stats.IsJump.Value)
         {
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
         }
