@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerState_Jump : PlayerState
@@ -23,13 +23,25 @@ public class PlayerState_Jump : PlayerState
 
     public override void Update()
     {
-        if(_curJumpCount < _maxJumpCount && _input.JumpInput())
+        if (_input.JumpInput())
         {
-            _movement.Jump();
-            _curJumpCount++;
+            if (Manager.Player.Stats.IsWall.Value)
+            {
+                float x = -_input.MoveInput().x;
+
+                Manager.Player.StartCoroutine(AddVelocity(new Vector2(x, 0), 0.8f));
+                
+                _movement.Jump();
+            }
+            else if (_curJumpCount < _maxJumpCount)
+            {
+                _movement.Jump();
+                _curJumpCount++;
+            }
         }
 
-        if(Manager.Player.Stats.IsGround && Manager.Player.Stats.Velocity.y < 0.01f)
+
+        if (Manager.Player.Stats.IsGround.Value && Manager.Player.Stats.Velocity.y < 0.01f)
         {
             StateMachine.ChangeState(new PlayerState_Idle(StateMachine));
         }
@@ -38,5 +50,23 @@ public class PlayerState_Jump : PlayerState
     public override void Exit()
     {
         Manager.Player.Stats.IsJump.Value = false;
+    }
+
+    private IEnumerator AddVelocity(Vector2 direction, float time)
+    {
+        Vector2 addVelocity = direction * 10f;
+        float curMoveSpeed = Manager.Player.Stats.MoveSpeed;
+        float count = time;
+
+        Manager.Player.Stats.AdditionalVelocity += addVelocity;
+        Manager.Player.Stats.MoveSpeed = 0;
+
+        while (count > 0f)
+        {
+            count -= Time.deltaTime;
+            Manager.Player.Stats.AdditionalVelocity -= addVelocity * Time.deltaTime / time;
+            Manager.Player.Stats.MoveSpeed += curMoveSpeed * Time.deltaTime / time;
+            yield return null;
+        }
     }
 }
