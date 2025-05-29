@@ -13,6 +13,9 @@ public class PlayerStats : ScriptableObject
     public float JumpPower;
 
     public bool IsGround => CheckIsGround();
+    public bool IsWall => CheckIsWall();
+
+    private PlayerInput _input;
     private LayerMask _groundLayerMask;
     private Collider2D[] _cols = new Collider2D[10];
     
@@ -23,6 +26,7 @@ public class PlayerStats : ScriptableObject
         // Awake에서 실행하였습니다.
         if (Application.isPlaying)
         {
+            _input = new PlayerInput();
             _groundLayerMask = 1 << LayerMask.NameToLayer("Ground");
         }
     }
@@ -35,6 +39,21 @@ public class PlayerStats : ScriptableObject
         int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _groundLayerMask);
 
         if (count > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CheckIsWall()
+    {
+        Vector2 point = (Vector2)Manager.Player.Transform.position + (Vector2.up * (Manager.Player.Transform.localScale.y * 2 - 0.2f));
+        Vector2 range = new Vector2(Manager.Player.Transform.localScale.x, 0.1f);
+
+        int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _groundLayerMask);
+
+        if (count > 0 && _input.MoveInput().x != 0)
         {
             return true;
         }
