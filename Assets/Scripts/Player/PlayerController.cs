@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement _movement;
     private StateMachine _stateMachine;
 
+
     private bool _isControl = true;
 
     private void Awake()
@@ -36,6 +37,11 @@ public class PlayerController : MonoBehaviour
         if (_input.JumpInput() && !Manager.Player.Stats.IsJump.Value)
         {
             _movement.Jump();
+            _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
+        }
+
+        if(!Manager.Player.Stats.IsGround && !Manager.Player.Stats.IsJump.Value)
+        {
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
         }
     }
