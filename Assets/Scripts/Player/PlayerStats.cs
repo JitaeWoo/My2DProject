@@ -30,7 +30,7 @@ public class PlayerStats : ScriptableObject
     private bool CheckIsGround()
     {
         Vector2 point = Manager.Player.Transform.position;
-        Vector2 range = new Vector2(Manager.Player.Transform.localScale.x, 0.1f);
+        Vector2 range = new Vector2(Manager.Player.Transform.localScale.x - 0.1f, 0.1f);
 
         int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _groundLayerMask);
 
