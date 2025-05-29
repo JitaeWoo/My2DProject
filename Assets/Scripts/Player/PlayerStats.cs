@@ -1,63 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Scriptable Objects/PlayerStats", order = 1)]
 public class PlayerStats : ScriptableObject
 {
-    public Stat<bool> IsJump = new();
+    public Stat<bool> IsJump { get; private set; }
 
     public Vector2 Velocity;
+    public Vector2 AdditionalVelocity;
 
     public float MoveSpeed;
     public float JumpPower;
 
-    public bool IsGround => CheckIsGround();
-    public bool IsWall => CheckIsWall();
-
-    private PlayerInput _input;
-    private LayerMask _groundLayerMask;
-    private Collider2D[] _cols = new Collider2D[10];
-    
-
-    private void Awake()
-    {
-        // LayerMask.NameToLayer는 ScriptableObject에서 선언시에 불러낼 수 없으므로
-        // Awake에서 실행하였습니다.
-        if (Application.isPlaying)
-        {
-            _input = new PlayerInput();
-            _groundLayerMask = 1 << LayerMask.NameToLayer("Ground");
-        }
-    }
-
-    private bool CheckIsGround()
-    {
-        Vector2 point = Manager.Player.Transform.position;
-        Vector2 range = new Vector2(Manager.Player.Transform.localScale.x - 0.1f, 0.1f);
-
-        int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _groundLayerMask);
-
-        if (count > 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool CheckIsWall()
-    {
-        Vector2 point = (Vector2)Manager.Player.Transform.position + (Vector2.up * (Manager.Player.Transform.localScale.y * 2 - 0.2f));
-        Vector2 range = new Vector2(Manager.Player.Transform.localScale.x, 0.1f);
-
-        int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _groundLayerMask);
-
-        if (count > 0 && _input.MoveInput().x != 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
+    public Stat<bool> IsGround { get; private set; }
+    public Stat<bool> IsWall { get; private set; }
 }
