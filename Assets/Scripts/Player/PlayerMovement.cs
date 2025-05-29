@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
         moveVector.y = _rigid.velocity.y;
 
+        moveVector += Manager.Player.Stats.AdditionalVelocity;
+
         _rigid.velocity = moveVector;
     }
 
@@ -34,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 jumpVector = Vector2.up * Manager.Player.Stats.JumpPower;
         jumpVector.x = _rigid.velocity.x;
+
+        jumpVector += Manager.Player.Stats.AdditionalVelocity;
 
         _rigid.velocity = jumpVector;
     }
