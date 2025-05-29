@@ -17,4 +17,5 @@ public class PlayerStats : ScriptableObject
 
     public Stat<bool> IsGround { get; private set; } = new();
     public Stat<bool> IsWall { get; private set; } = new();
+    public Stat<bool> IsWallLaft { get; private set; } = new();
 }

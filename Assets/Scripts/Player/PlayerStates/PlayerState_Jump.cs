@@ -27,7 +27,7 @@ public class PlayerState_Jump : PlayerState
         {
             if (Manager.Player.Stats.IsWall.Value)
             {
-                float x = -_input.MoveInput().x;
+                float x = Manager.Player.Stats.IsWallLaft.Value ? 1 : -1;
 
                 Manager.Player.StartCoroutine(AddVelocity(new Vector2(x, 0), 0.8f));
                 
