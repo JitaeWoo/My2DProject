@@ -11,13 +11,14 @@ public class PlayerManager : Singleton<PlayerManager>
     public Transform Transform { get; private set; }
 
     // IsWall, IsGround 판정에 필요한 변수들
-    private PlayerInput _input;
+    private PlayerInput _input = new PlayerInput();
     private LayerMask _groundLayerMask;
     private Collider2D[] _cols = new Collider2D[10];
 
     private void Awake()
     {
         Stats = Instantiate(_statsTemplate);
+        _groundLayerMask = 1 << LayerMask.NameToLayer("Ground");
     }
 
     private void Update()

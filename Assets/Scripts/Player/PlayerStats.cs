@@ -7,7 +7,7 @@ using UnityEngine.PlayerLoop;
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Scriptable Objects/PlayerStats", order = 1)]
 public class PlayerStats : ScriptableObject
 {
-    public Stat<bool> IsJump { get; private set; }
+    public Stat<bool> IsJump { get; private set; } = new();
 
     public Vector2 Velocity;
     public Vector2 AdditionalVelocity;
@@ -15,6 +15,6 @@ public class PlayerStats : ScriptableObject
     public float MoveSpeed;
     public float JumpPower;
 
-    public Stat<bool> IsGround { get; private set; }
-    public Stat<bool> IsWall { get; private set; }
+    public Stat<bool> IsGround { get; private set; } = new();
+    public Stat<bool> IsWall { get; private set; } = new();
 }
