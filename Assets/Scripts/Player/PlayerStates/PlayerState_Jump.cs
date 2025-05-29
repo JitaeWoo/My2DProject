@@ -6,9 +6,16 @@ public class PlayerState_Jump : PlayerState
 {
     private Collider2D[] _cols = new Collider2D[10];
     private LayerMask _layerMask = 1 << LayerMask.NameToLayer("Ground");
+    private PlayerMovement _movement;
+    private PlayerInput _input;
+    private int _curJumpCount;
+    private int _maxJumpCount;
 
     public PlayerState_Jump(StateMachine stateMachine) : base(stateMachine)
     {
+        _movement = Manager.Player.Transform.GetComponent<PlayerMovement>();
+        _input = new PlayerInput();
+        _maxJumpCount = 1;
     }
 
     public override void Enter()
@@ -22,6 +29,12 @@ public class PlayerState_Jump : PlayerState
         Vector2 range = new Vector2(Manager.Player.Transform.localScale.x, 0.1f);
 
         int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _layerMask);
+
+        if(_curJumpCount < _maxJumpCount && _input.JumpInput())
+        {
+            _movement.Jump();
+            _curJumpCount++;
+        }
 
         if(count > 0 && Manager.Player.Stats.Velocity.y < 0.01f)
         {
