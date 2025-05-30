@@ -47,7 +47,7 @@ MonoBehaviour:
   _statsTemplate: {fileID: 11400000, guid: f93256e4a28598f4bb76a0672f226637, type: 2}
   _groundLayerMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 8
   _wallLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
