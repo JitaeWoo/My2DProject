@@ -29,7 +29,8 @@ public class PlayerState_Jump : PlayerState
             {
                 float x = Manager.Player.Stats.IsWallLaft.Value ? 1 : -1;
 
-                Manager.Player.StartCoroutine(AddVelocity(new Vector2(x, 0), 0.8f));
+                Manager.Player.Stats.ForcedVelocity = new Vector2(x, 0) * 10f;
+                _movement.SetForceTime(0.8f);
                 
                 _movement.Jump();
             }
@@ -50,28 +51,5 @@ public class PlayerState_Jump : PlayerState
     public override void Exit()
     {
         Manager.Player.Stats.IsJump.Value = false;
-    }
-
-    private IEnumerator AddVelocity(Vector2 direction, float time)
-    {
-        Vector2 addVelocity = direction * 10f;
-        Vector2 restVelocity = addVelocity;
-        float curMoveSpeed = Manager.Player.Stats.MoveSpeed;
-        float count = time;
-
-        Manager.Player.Stats.AdditionalVelocity += addVelocity;
-        Manager.Player.Stats.MoveSpeed = 0;
-
-        while (count > 0f)
-        {
-            count -= Time.deltaTime;
-            Manager.Player.Stats.AdditionalVelocity -= addVelocity * Time.deltaTime / time;
-            restVelocity -= addVelocity * Time.deltaTime / time;
-            Manager.Player.Stats.MoveSpeed += curMoveSpeed * Time.deltaTime / time;
-            yield return null;
-        }
-
-        Manager.Player.Stats.AdditionalVelocity -= restVelocity;
-        Manager.Player.Stats.MoveSpeed = curMoveSpeed;
     }
 }

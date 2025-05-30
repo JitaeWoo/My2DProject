@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigid;
     private int _curDashCount;
     private int _maxDashCount = 1;
+    private float _forceRate;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         if (value)
         {
             _rigid.velocity = new Vector2(_rigid.velocity.x, 0);
+            _forceRate = 0;
         }
     }
 
@@ -49,15 +51,18 @@ public class PlayerMovement : MonoBehaviour
         if (value)
         {
             _curDashCount = 0;
+            _forceRate = 0;
         }
     }
 
     public void Move(Vector2 direction)
     {
         Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
+        moveVector = moveVector * (1 - _forceRate) + Manager.Player.Stats.ForcedVelocity * _forceRate;
+
         moveVector.y = _rigid.velocity.y;
 
-        moveVector += Manager.Player.Stats.AdditionalVelocity;
+        moveVector += Manager.Player.Stats.ExternalVelocity;
 
         _rigid.velocity = moveVector;
     }
@@ -67,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpVector = Vector2.up * Manager.Player.Stats.JumpPower;
         jumpVector.x = _rigid.velocity.x;
 
-        jumpVector += Manager.Player.Stats.AdditionalVelocity;
+        jumpVector += Manager.Player.Stats.ExternalVelocity;
 
         _rigid.velocity = jumpVector;
     }
@@ -93,5 +98,21 @@ public class PlayerMovement : MonoBehaviour
         // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
         _rigid.velocity = _rigid.velocity.normalized * 2;
         Manager.Player.Stats.IsControl.Value = true;
+    }
+
+    public void SetForceTime(float time)
+    {
+        StartCoroutine(ForceVectorCoroutine(time));
+    }
+
+    private IEnumerator ForceVectorCoroutine (float time)
+    {
+        _forceRate = 1;
+        while (_forceRate > 0)
+        {
+            _forceRate -= Time.deltaTime / time;
+            yield return null;
+        }
+        _forceRate = 0;
     }
 }
