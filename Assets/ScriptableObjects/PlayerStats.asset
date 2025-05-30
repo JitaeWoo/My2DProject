@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111fe2bd2fb5aba4dad160b3d8ed731d, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
+  Velocity: {x: 0, y: 0}
+  AdditionalVelocity: {x: 0, y: 0}
   MoveSpeed: 5
-  JumpPower: 10
+  JumpPower: 15
