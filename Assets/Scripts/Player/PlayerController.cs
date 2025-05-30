@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private PlayerInput _input;
+    private PlayerStats _stats => Manager.Player.Stats;
     private PlayerMovement _movement;
     private StateMachine _stateMachine;
 
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!Manager.Player.Stats.IsControl.Value) return;
+        if (!_stats.IsControl.Value) return;
 
         _stateMachine.Update();
 
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
         _movement.Move(moveInput);
 
-        if (_input.JumpInput() && !Manager.Player.Stats.IsJump.Value)
+        if (_input.JumpInput() && !_stats.IsJump.Value)
         {
             _movement.Jump();
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
             _movement.Dash(moveInput.normalized);
         }
 
-        if(!Manager.Player.Stats.IsGround.Value && !Manager.Player.Stats.IsJump.Value)
+        if(!_stats.IsGround.Value && !_stats.IsJump.Value)
         {
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
         }
