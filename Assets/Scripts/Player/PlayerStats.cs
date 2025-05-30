@@ -8,7 +8,10 @@ using UnityEngine.PlayerLoop;
 public class PlayerStats : ScriptableObject
 {
     [HideInInspector] public Vector2 Velocity;
-    [HideInInspector] public Vector2 AdditionalVelocity;
+    // 플레이어 내부 구조에서 강제로 속도를 줄 때 사용
+    [HideInInspector] public Vector2 ForcedVelocity;
+    // 외부에서 플레이어에 속도를 더하거나 뺄 때 사용
+    [HideInInspector] public Vector2 ExternalVelocity;
 
     public float MoveSpeed;
     public float JumpPower;
