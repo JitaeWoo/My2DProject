@@ -55,6 +55,7 @@ public class PlayerState_Jump : PlayerState
     private IEnumerator AddVelocity(Vector2 direction, float time)
     {
         Vector2 addVelocity = direction * 10f;
+        Vector2 restVelocity = addVelocity;
         float curMoveSpeed = Manager.Player.Stats.MoveSpeed;
         float count = time;
 
@@ -65,8 +66,12 @@ public class PlayerState_Jump : PlayerState
         {
             count -= Time.deltaTime;
             Manager.Player.Stats.AdditionalVelocity -= addVelocity * Time.deltaTime / time;
+            restVelocity -= addVelocity * Time.deltaTime / time;
             Manager.Player.Stats.MoveSpeed += curMoveSpeed * Time.deltaTime / time;
             yield return null;
         }
+
+        Manager.Player.Stats.AdditionalVelocity -= restVelocity;
+        Manager.Player.Stats.MoveSpeed = curMoveSpeed;
     }
 }
