@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D _rigid;
+    private int _curDashCount;
+    private int _maxDashCount = 1;
 
     private void Awake()
     {
@@ -25,11 +27,13 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         Manager.Player.Stats.IsWall.OnChanged += OnIsWall;
+        Manager.Player.Stats.IsGround.OnChanged += OnIsGround;
     }
 
     private void OnDisable()
     {
         Manager.Player.Stats.IsWall.OnChanged -= OnIsWall;
+        Manager.Player.Stats.IsGround.OnChanged -= OnIsGround;
     }
 
     private void OnIsWall(bool value)
@@ -37,6 +41,14 @@ public class PlayerMovement : MonoBehaviour
         if (value)
         {
             _rigid.velocity = new Vector2(_rigid.velocity.x, 0);
+        }
+    }
+
+    private void OnIsGround(bool value)
+    {
+        if (value)
+        {
+            _curDashCount = 0;
         }
     }
 
@@ -58,5 +70,28 @@ public class PlayerMovement : MonoBehaviour
         jumpVector += Manager.Player.Stats.AdditionalVelocity;
 
         _rigid.velocity = jumpVector;
+    }
+
+    public void Dash(Vector2 direction)
+    {
+        if(_curDashCount < _maxDashCount)
+        {
+            _curDashCount++;
+            StartCoroutine(DashCoroutine(direction));
+        }
+    }
+
+    private IEnumerator DashCoroutine(Vector2 direction)
+    {
+        float curGravity = _rigid.gravityScale;
+
+        Manager.Player.Stats.IsControl.Value = false;
+        _rigid.gravityScale = 0;
+        _rigid.velocity = direction * Manager.Player.Stats.MoveSpeed * 4;
+        yield return new WaitForSeconds(0.2f);
+        _rigid.gravityScale = curGravity;
+        // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
+        _rigid.velocity = _rigid.velocity.normalized * 2;
+        Manager.Player.Stats.IsControl.Value = true;
     }
 }

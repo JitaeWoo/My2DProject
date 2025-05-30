@@ -16,4 +16,9 @@ public class PlayerInput
     {
         return Input.GetKeyDown(KeyCode.Space);
     }
+
+    public bool DashInput()
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift);
+    }
 }

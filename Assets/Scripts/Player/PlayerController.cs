@@ -30,12 +30,19 @@ public class PlayerController : MonoBehaviour
 
         _stateMachine.Update();
 
-        _movement.Move(_input.MoveInput());
+        Vector2 moveInput = _input.MoveInput();
+
+        _movement.Move(moveInput);
 
         if (_input.JumpInput() && !Manager.Player.Stats.IsJump.Value)
         {
             _movement.Jump();
             _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
+        }
+
+        if (_input.DashInput())
+        {
+            _movement.Dash(moveInput.normalized);
         }
 
         if(!Manager.Player.Stats.IsGround.Value && !Manager.Player.Stats.IsJump.Value)
