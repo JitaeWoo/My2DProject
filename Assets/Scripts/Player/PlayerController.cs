@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
         _stateMachine.Update();
 
         Vector2 moveInput = _input.MoveInput();
+        _stats.MoveInput.Value = moveInput;
 
         _movement.Move(moveInput);
 
