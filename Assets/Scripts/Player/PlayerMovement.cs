@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private PlayerStats _stats => Manager.Player.Stats;
     private Rigidbody2D _rigid;
     private int _curDashCount;
     private int _maxDashCount = 1;
@@ -22,19 +23,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Manager.Player.Stats.Velocity = _rigid.velocity;
+        _stats.Velocity = _rigid.velocity;
     }
 
     private void OnEnable()
     {
-        Manager.Player.Stats.IsWall.OnChanged += OnIsWall;
-        Manager.Player.Stats.IsGround.OnChanged += OnIsGround;
+        _stats.IsWall.OnChanged += OnIsWall;
+        _stats.IsGround.OnChanged += OnIsGround;
     }
 
     private void OnDisable()
     {
-        Manager.Player.Stats.IsWall.OnChanged -= OnIsWall;
-        Manager.Player.Stats.IsGround.OnChanged -= OnIsGround;
+        _stats.IsWall.OnChanged -= OnIsWall;
+        _stats.IsGround.OnChanged -= OnIsGround;
     }
 
     private void OnIsWall(bool value)
@@ -57,31 +58,30 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector2 direction)
     {
-        Vector2 moveVector = direction * Manager.Player.Stats.MoveSpeed;
-        moveVector = moveVector * (1 - _forceRate) + Manager.Player.Stats.ForcedVelocity * _forceRate;
+        Vector2 moveVector = direction * _stats.MoveSpeed;
+        moveVector = moveVector * (1 - _forceRate) + _stats.ForcedVelocity * _forceRate;
 
         moveVector.y = _rigid.velocity.y;
 
-        moveVector += Manager.Player.Stats.ExternalVelocity;
+        moveVector += _stats.ExternalVelocity;
 
         _rigid.velocity = moveVector;
     }
 
     public void Jump()
     {
-        Vector2 jumpVector = Vector2.up * Manager.Player.Stats.JumpPower;
+        Vector2 jumpVector = Vector2.up * _stats.JumpPower;
         jumpVector.x = _rigid.velocity.x;
 
-        jumpVector += Manager.Player.Stats.ExternalVelocity;
+        jumpVector += _stats.ExternalVelocity;
 
         _rigid.velocity = jumpVector;
     }
 
     public void Dash(Vector2 direction)
     {
-        if(_curDashCount < _maxDashCount)
+        if (_curDashCount < _maxDashCount)
         {
-            _curDashCount++;
             StartCoroutine(DashCoroutine(direction));
         }
     }
@@ -90,16 +90,21 @@ public class PlayerMovement : MonoBehaviour
     {
         float curGravity = _rigid.gravityScale;
 
-        Manager.Player.Stats.IsControl.Value = false;
-        Manager.Player.Stats.IsDash.Value = true;
+        _stats.IsControl.Value = false;
+        _stats.IsDash.Value = true;
         _rigid.gravityScale = 0;
-        _rigid.velocity = direction * Manager.Player.Stats.MoveSpeed * 4;
+        _rigid.velocity = direction * _stats.MoveSpeed * 4;
         yield return new WaitForSeconds(0.2f);
+        if (!_stats.IsGround.Value)
+        {
+            _curDashCount++;
+        }
+
         _rigid.gravityScale = curGravity;
         // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
         _rigid.velocity = _rigid.velocity.normalized * 2;
-        Manager.Player.Stats.IsDash.Value = false;
-        Manager.Player.Stats.IsControl.Value = true;
+        _stats.IsDash.Value = false;
+        _stats.IsControl.Value = true;
     }
 
     public void SetForceTime(float time)
@@ -107,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(ForceVectorCoroutine(time));
     }
 
-    private IEnumerator ForceVectorCoroutine (float time)
+    private IEnumerator ForceVectorCoroutine(float time)
     {
         _forceRate = 1;
         while (_forceRate > 0)
