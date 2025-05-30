@@ -56,7 +56,7 @@ public class PlayerPresenter : MonoBehaviour
         {
             _sprite.flipX = true;
         }
-        else
+        else if(value.x > 0)
         {
             _sprite.flipX = false;
         }
