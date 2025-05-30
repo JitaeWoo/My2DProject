@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement _movement;
     private StateMachine _stateMachine;
 
-
-    private bool _isControl = true;
-
     private void Awake()
     {
         Init();
@@ -20,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private void Init()
     {
         Manager.Player.SetTransform(transform);
+        Manager.Player.Stats.IsControl.Value = true;
         _input = new PlayerInput();
         _movement = GetComponent<PlayerMovement>();
         _stateMachine = new StateMachine();
@@ -28,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!_isControl) return;
+        if (!Manager.Player.Stats.IsControl.Value) return;
 
         _stateMachine.Update();
 
