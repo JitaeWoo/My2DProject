@@ -21,6 +21,7 @@ public class PlayerStats : ScriptableObject
     public Stat<bool> IsControl { get; private set; } = new();
     public Stat<bool> IsJump { get; private set; } = new();
     public Stat<bool> IsWalk { get; private set; } = new();
+    public Stat<bool> IsDash { get; private set; } = new();
     public Stat<bool> IsGround { get; private set; } = new();
     public Stat<bool> IsWall { get; private set; } = new();
     public Stat<bool> IsWallLaft { get; private set; } = new();

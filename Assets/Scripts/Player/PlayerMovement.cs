@@ -91,12 +91,14 @@ public class PlayerMovement : MonoBehaviour
         float curGravity = _rigid.gravityScale;
 
         Manager.Player.Stats.IsControl.Value = false;
+        Manager.Player.Stats.IsDash.Value = true;
         _rigid.gravityScale = 0;
         _rigid.velocity = direction * Manager.Player.Stats.MoveSpeed * 4;
         yield return new WaitForSeconds(0.2f);
         _rigid.gravityScale = curGravity;
         // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
         _rigid.velocity = _rigid.velocity.normalized * 2;
+        Manager.Player.Stats.IsDash.Value = false;
         Manager.Player.Stats.IsControl.Value = true;
     }
 

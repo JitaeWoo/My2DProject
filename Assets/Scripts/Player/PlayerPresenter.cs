@@ -24,6 +24,7 @@ public class PlayerPresenter : MonoBehaviour
         _stats.IsWalk.OnChanged += ChangeIsWalk;
         _stats.IsJump.OnChanged += ChangeIsJump;
         _stats.MoveInput.OnChanged += ChangeMoveInput;
+        _stats.IsDash.OnChanged += ChangeIsDash;
     }
 
     private void OnDisable()
@@ -31,6 +32,7 @@ public class PlayerPresenter : MonoBehaviour
         _stats.IsWalk.OnChanged -= ChangeIsWalk;
         _stats.IsJump.OnChanged -= ChangeIsJump;
         _stats.MoveInput.OnChanged -= ChangeMoveInput;
+        _stats.IsDash.OnChanged -= ChangeIsDash;
     }
 
     private void ChangeIsWalk(bool value)
@@ -41,6 +43,11 @@ public class PlayerPresenter : MonoBehaviour
     private void ChangeIsJump(bool value)
     {
         _animator.SetBool("IsJump", value);
+    }
+
+    private void ChangeIsDash(bool value)
+    {
+        _animator.SetBool("IsDash", value);
     }
 
     private void ChangeMoveInput(Vector2 value)
