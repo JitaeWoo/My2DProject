@@ -9,8 +9,8 @@ public class PlayerStats : ScriptableObject
 {
     public Stat<bool> IsJump { get; private set; } = new();
 
-    public Vector2 Velocity;
-    public Vector2 AdditionalVelocity;
+    [HideInInspector] public Vector2 Velocity;
+    [HideInInspector] public Vector2 AdditionalVelocity;
 
     public float MoveSpeed;
     public float JumpPower;
