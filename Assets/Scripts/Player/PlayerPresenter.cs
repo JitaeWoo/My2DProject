@@ -14,6 +14,11 @@ public class PlayerPresenter : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        _animator.SetFloat("MoveVectorY", _stats.Velocity.y);
+    }
+
     private void OnEnable()
     {
         _stats.IsWalk.OnChanged += ChangeIsWalk;
