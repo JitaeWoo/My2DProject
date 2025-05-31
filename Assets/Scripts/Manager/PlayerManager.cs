@@ -57,7 +57,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
         int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _wallLayerMask);
 
-        if (count > 0 && _input.MoveInput().x != 0)
+        if (count > 0 && _input.MoveInput().x != 0 && Stats.IsJump.Value && !Stats.IsDash.Value)
         {
             Stats.IsWallLaft.Value = Physics2D.Raycast(point, Vector2.left, Transform.localScale.x / 2 + 0.1f, _wallLayerMask);
 
