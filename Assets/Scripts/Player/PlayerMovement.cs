@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private int _curDashCount;
     private int _maxDashCount = 1;
     private float _forceRate;
+    private float _gravityScale = 3;
 
     private void Awake()
     {
@@ -43,7 +44,12 @@ public class PlayerMovement : MonoBehaviour
         if (value)
         {
             _rigid.velocity = new Vector2(_rigid.velocity.x, 0);
+            _rigid.gravityScale = 0;
             _forceRate = 0;
+        }
+        else
+        {
+            _rigid.gravityScale = _gravityScale;
         }
     }
 
