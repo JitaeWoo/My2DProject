@@ -16,6 +16,8 @@ public class PlayerStats : ScriptableObject
     // 외부에서 플레이어에 속도를 더하거나 뺄 때 사용
     [HideInInspector] public Vector2 ExternalVelocity;
 
+    public Stat<int> MaxHp { get; private set; } = new();
+    public Stat<int> CurHp { get; private set; } = new();
     public float MoveSpeed;
     public float JumpPower;
 
