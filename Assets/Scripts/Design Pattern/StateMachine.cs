@@ -9,7 +9,11 @@ public class StateMachine
 
     public void ChangeState(string changedStateName)
     {
-        if (!StateDict.ContainsKey(changedStateName)) return;
+        if (!StateDict.ContainsKey(changedStateName))
+        {
+            Debug.LogError($"{changedStateName} 상태가 등록되지 않았습니다.");
+            return;
+        }
 
         BaseState changedState = StateDict[changedStateName];
 

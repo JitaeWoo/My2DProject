@@ -22,7 +22,6 @@ public class PlayerStats : ScriptableObject
     public float JumpPower;
 
     public Stat<bool> IsControl { get; private set; } = new();
-    public Stat<bool> IsJump { get; private set; } = new();
     public Stat<bool> IsWalk { get; private set; } = new();
     public Stat<bool> IsDash { get; private set; } = new();
     public Stat<bool> IsGround { get; private set; } = new();
