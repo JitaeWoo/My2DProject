@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -22,7 +23,23 @@ public class PlayerController : MonoBehaviour
         _input = new PlayerInput();
         _movement = GetComponent<PlayerMovement>();
         _stateMachine = new StateMachine();
-        _stateMachine.ChangeState(new PlayerState_Idle(_stateMachine));
+        _stateMachine.StateDict["Idle"] = new PlayerState_Idle(_stateMachine);
+        _stateMachine.StateDict["Walk"] = new PlayerState_Walk(_stateMachine);
+        _stateMachine.StateDict["Jump"] = new PlayerState_Jump(_stateMachine);
+        _stateMachine.ChangeState("Idle");
+    }
+
+    private void OnEnable()
+    {
+        //_stats.CurHp.OnChanged +=
+    }
+
+    private void Died(float curHp)
+    {
+        if(curHp <= 0)
+        {
+            
+        }
     }
 
     void Update()
@@ -39,7 +56,7 @@ public class PlayerController : MonoBehaviour
         if (_input.JumpInput() && !_stats.IsJump.Value)
         {
             _movement.Jump();
-            _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
+            _stateMachine.ChangeState("Jump");
         }
 
         if (_input.DashInput())
@@ -49,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
         if(!_stats.IsGround.Value && !_stats.IsJump.Value)
         {
-            _stateMachine.ChangeState(new PlayerState_Jump(_stateMachine));
+            _stateMachine.ChangeState("Jump");
         }
     }
 

@@ -5,14 +5,19 @@ using UnityEngine;
 public class StateMachine
 {
     public BaseState CurState;
+    public Dictionary<string, BaseState> StateDict = new Dictionary<string, BaseState>();
 
-    public void ChangeState(BaseState changedStats)
+    public void ChangeState(string changedStateName)
     {
-        if (CurState == changedStats) return;
+        if (!StateDict.ContainsKey(changedStateName)) return;
+
+        BaseState changedState = StateDict[changedStateName];
+
+        if (CurState == changedState) return;
 
         // 처음에 없을 수도 있으니 null 체크
         CurState?.Exit();
-        CurState = changedStats;
+        CurState = changedState;
         CurState.Enter();
     }
 

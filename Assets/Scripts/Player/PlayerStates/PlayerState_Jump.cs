@@ -44,7 +44,7 @@ public class PlayerState_Jump : PlayerState
 
         if (Manager.Player.Stats.IsGround.Value && Manager.Player.Stats.Velocity.y < 0.01f)
         {
-            StateMachine.ChangeState(new PlayerState_Idle(StateMachine));
+            StateMachine.ChangeState("Idle");
         }
     }
 

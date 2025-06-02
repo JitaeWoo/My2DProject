@@ -14,7 +14,7 @@ public class PlayerState_Idle : PlayerState
     {
         if(_input.MoveInput() != Vector2.zero)
         {
-            StateMachine.ChangeState(new PlayerState_Walk(StateMachine));
+            StateMachine.ChangeState("Walk");
         }
     }
 }
