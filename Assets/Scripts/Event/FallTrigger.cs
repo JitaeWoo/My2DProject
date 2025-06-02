@@ -9,6 +9,7 @@ public class FallTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Manager.Player.ReturnSafePosition();
+            Manager.Player.TakeDamage(1);
         }
     }
 }
