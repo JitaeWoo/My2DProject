@@ -22,7 +22,7 @@ public class PlayerPresenter : MonoBehaviour
     private void OnEnable()
     {
         _stats.IsWalk.OnChanged += ChangeIsWalk;
-        _stats.IsJump.OnChanged += ChangeIsJump;
+        _stats.IsGround.OnChanged += ChangeIsGround;
         _stats.MoveInput.OnChanged += ChangeMoveInput;
         _stats.IsDash.OnChanged += ChangeIsDash;
         _stats.IsWall.OnChanged += ChangeIsWall;
@@ -31,7 +31,7 @@ public class PlayerPresenter : MonoBehaviour
     private void OnDisable()
     {
         _stats.IsWalk.OnChanged -= ChangeIsWalk;
-        _stats.IsJump.OnChanged -= ChangeIsJump;
+        _stats.IsGround.OnChanged -= ChangeIsGround;
         _stats.MoveInput.OnChanged -= ChangeMoveInput;
         _stats.IsDash.OnChanged -= ChangeIsDash;
         _stats.IsWall.OnChanged -= ChangeIsWall;
@@ -42,9 +42,9 @@ public class PlayerPresenter : MonoBehaviour
         _animator.SetBool("IsWalk", value);
     }
 
-    private void ChangeIsJump(bool value)
+    private void ChangeIsGround(bool value)
     {
-        _animator.SetBool("IsJump", value);
+        _animator.SetBool("IsGround", value);
     }
 
     private void ChangeIsDash(bool value)

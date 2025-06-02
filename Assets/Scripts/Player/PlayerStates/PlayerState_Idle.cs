@@ -10,6 +10,11 @@ public class PlayerState_Idle : PlayerState
         _input = new PlayerInput();
     }
 
+    public override void Enter()
+    {
+        Manager.Player.Stats.CurJumpCount = 0;
+    }
+
     public override void Update()
     {
         if(_input.MoveInput() != Vector2.zero)

@@ -26,7 +26,6 @@ public class PlayerManager : Singleton<PlayerManager>
         if(Transform != null)
         {
             Stats.IsGround.Value = CheckIsGround();
-            Stats.IsWall.Value = CheckIsWall();
         }
     }
 
@@ -42,7 +41,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void TakeDamage(int damage)
     {
-        Manager.Player.Stats.CurHp.Value -= damage;
+        if (Stats.CurHp.Value <= 0) return;
+
+        Stats.CurHp.Value -= damage;
     }
 
     private bool CheckIsGround()
@@ -76,22 +77,5 @@ public class PlayerManager : Singleton<PlayerManager>
         bool checkRight = Physics2D.Raycast(rightPoint, Vector2.down, 0.1f, _groundLayerMask);
 
         return checkLaft && checkRight;
-    }
-
-    private bool CheckIsWall()
-    {
-        Vector2 point = (Vector2)Transform.position + (Vector2.up * (Transform.localScale.y * 2 - 0.2f));
-        Vector2 range = new Vector2(Transform.localScale.x, 0.1f);
-
-        int count = Physics2D.OverlapBoxNonAlloc(point, range, 0f, _cols, _wallLayerMask);
-
-        if (count > 0 && _input.MoveInput().x != 0 && Stats.IsJump.Value && !Stats.IsDash.Value)
-        {
-            Stats.IsWallLaft.Value = Physics2D.Raycast(point, Vector2.left, Transform.localScale.x / 2 + 0.1f, _wallLayerMask);
-
-            return true;
-        }
-
-        return false;
     }
 }

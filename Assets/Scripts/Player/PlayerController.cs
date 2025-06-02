@@ -26,14 +26,23 @@ public class PlayerController : MonoBehaviour
         _stateMachine.StateDict["Idle"] = new PlayerState_Idle(_stateMachine);
         _stateMachine.StateDict["Walk"] = new PlayerState_Walk(_stateMachine);
         _stateMachine.StateDict["Jump"] = new PlayerState_Jump(_stateMachine);
+        _stateMachine.StateDict["StayWall"] = new PlayerState_StayWall(_stateMachine);
         _stateMachine.ChangeState("Idle");
     }
 
     private void OnEnable()
     {
         //_stats.CurHp.OnChanged +=
+        _stats.IsGround.OnChanged += SetJumpState;
     }
 
+    private void SetJumpState(bool value)
+    {
+        if (!value)
+        {
+            _stateMachine.ChangeState("Jump");
+        }
+    }
     private void Died(float curHp)
     {
         if(curHp <= 0)
@@ -53,20 +62,14 @@ public class PlayerController : MonoBehaviour
 
         _movement.Move(moveInput);
 
-        if (_input.JumpInput() && !_stats.IsJump.Value)
+        if (_input.JumpInput() && _stats.IsGround.Value)
         {
             _movement.Jump();
-            _stateMachine.ChangeState("Jump");
         }
 
         if (_input.DashInput())
         {
             _movement.Dash(moveInput.normalized);
-        }
-
-        if(!_stats.IsGround.Value && !_stats.IsJump.Value)
-        {
-            _stateMachine.ChangeState("Jump");
         }
     }
 
