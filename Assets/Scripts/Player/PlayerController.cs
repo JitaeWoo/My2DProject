@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_stats.IsControl.Value) return;
+
         _stateMachine.FixedUpdate();
     }
 }
