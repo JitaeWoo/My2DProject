@@ -35,6 +35,11 @@ public class PlayerManager : Singleton<PlayerManager>
         Transform = transfrom;
     }
 
+    public void ReturnSafePosition()
+    {
+        Transform.position = Stats.LastSafePosition.Value;
+    }
+
     private bool CheckIsGround()
     {
         Vector2 point = Transform.position;
@@ -44,10 +49,28 @@ public class PlayerManager : Singleton<PlayerManager>
 
         if (count > 0)
         {
+            if (IsSafe())
+            {
+                Stats.LastSafePosition.Value = Transform.position;
+            }
             return true;
         }
 
         return false;
+    }
+
+    private bool IsSafe()
+    {
+        float scaleX = Transform.localScale.x;
+        Vector2 laftPoint = Transform.position;
+        laftPoint.x -= scaleX / 2;
+        Vector2 rightPoint = Transform.position;
+        rightPoint.x += scaleX / 2;
+
+        bool checkLaft = Physics2D.Raycast(laftPoint, Vector2.down, 0.1f, _groundLayerMask);
+        bool checkRight = Physics2D.Raycast(rightPoint, Vector2.down, 0.1f, _groundLayerMask);
+
+        return checkLaft && checkRight;
     }
 
     private bool CheckIsWall()

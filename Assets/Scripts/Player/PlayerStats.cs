@@ -9,6 +9,7 @@ using UnityEngine.PlayerLoop;
 public class PlayerStats : ScriptableObject
 {
     public Stat<Vector2> MoveInput { get; private set; } = new();
+    public Stat<Vector2> LastSafePosition { get; private set; } = new();
     [HideInInspector] public Vector2 Velocity;
     // 플레이어 내부 구조에서 강제로 속도를 줄 때 사용
     [HideInInspector] public Vector2 ForcedVelocity;
