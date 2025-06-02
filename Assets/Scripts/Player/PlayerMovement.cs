@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
 
         _rigid.gravityScale = curGravity;
         // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
-        _rigid.velocity = _rigid.velocity.normalized * 2;
+        _rigid.velocity = _rigid.velocity * 0.2f;
         _stats.IsDash.Value = false;
         _stats.IsControl.Value = true;
     }
