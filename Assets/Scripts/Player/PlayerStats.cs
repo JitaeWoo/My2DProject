@@ -16,6 +16,8 @@ public class PlayerStats : ScriptableObject
     public Stat<int> MaxHp { get; private set; } = new();
     [SerializeField] private  int _maxHp;
     public Stat<int> CurHp { get; private set; } = new();
+    public int MaxJumpCount;
+    [HideInInspector] public int CurJumpCount;
     public float MoveSpeed;
     public float JumpPower;
 

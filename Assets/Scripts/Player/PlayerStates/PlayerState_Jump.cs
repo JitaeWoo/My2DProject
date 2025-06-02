@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerState_Jump : PlayerState
 {
+    private PlayerStats _stats => Manager.Player.Stats;
     private PlayerMovement _movement;
     private PlayerInput _input;
     private int _curJumpCount;
@@ -18,7 +19,8 @@ public class PlayerState_Jump : PlayerState
 
     public override void Enter()
     {
-        Manager.Player.Stats.IsJump.Value = true;
+        _stats.IsJump.Value = true;
+        _stats.CurJumpCount++;
     }
 
     public override void Update()
@@ -34,15 +36,15 @@ public class PlayerState_Jump : PlayerState
                 
                 _movement.Jump();
             }
-            else if (_curJumpCount < _maxJumpCount)
+            else if (_stats.CurJumpCount < _stats.MaxJumpCount)
             {
                 _movement.Jump();
-                _curJumpCount++;
+                _stats.CurJumpCount++;
             }
         }
 
 
-        if (Manager.Player.Stats.IsGround.Value && Manager.Player.Stats.Velocity.y < 0.01f)
+        if (_stats.IsGround.Value && _stats.Velocity.y < 0.01f)
         {
             StateMachine.ChangeState("Idle");
         }
@@ -50,6 +52,8 @@ public class PlayerState_Jump : PlayerState
 
     public override void Exit()
     {
-        Manager.Player.Stats.IsJump.Value = false;
+        _stats.IsJump.Value = false;
     }
+
+
 }
