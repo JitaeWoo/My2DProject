@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
-  AdditionalVelocity: {x: 0, y: 0}
+  ForcedVelocity: {x: 0, y: 0}
+  ExternalVelocity: {x: 0, y: 0}
+  _maxHp: 3
   MoveSpeed: 5
   JumpPower: 15
