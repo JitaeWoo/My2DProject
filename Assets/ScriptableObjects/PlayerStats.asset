@@ -16,5 +16,7 @@ MonoBehaviour:
   ForcedVelocity: {x: 0, y: 0}
   ExternalVelocity: {x: 0, y: 0}
   _maxHp: 3
+  MaxJumpCount: 2
+  CurJumpCount: 0
   MoveSpeed: 5
   JumpPower: 15
