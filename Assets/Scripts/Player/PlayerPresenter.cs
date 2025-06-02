@@ -27,6 +27,7 @@ public class PlayerPresenter : MonoBehaviour
         _stats.IsDash.OnChanged += ChangeIsDash;
         _stats.IsWall.OnChanged += ChangeIsWall;
         _stats.IsDamage.OnChanged += ChangeIsDamage;
+        _stats.IsDied.OnChanged += ChangeIsDied;
     }
 
     private void OnDisable()
@@ -37,6 +38,7 @@ public class PlayerPresenter : MonoBehaviour
         _stats.IsDash.OnChanged -= ChangeIsDash;
         _stats.IsWall.OnChanged -= ChangeIsWall;
         _stats.IsDamage.OnChanged -= ChangeIsDamage;
+        _stats.IsDied.OnChanged -= ChangeIsDied;
     }
 
     private void ChangeIsWalk(bool value)
@@ -66,6 +68,11 @@ public class PlayerPresenter : MonoBehaviour
             _animator.SetTrigger("DamageTrigger");
             _stats.IsDamage.Value = false;
         }   
+    }
+
+    private void ChangeIsDied(bool value)
+    {
+        _animator.SetBool("IsDied", value);
     }
 
     private void ChangeMoveInput(Vector2 value)

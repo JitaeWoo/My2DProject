@@ -45,6 +45,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
         Stats.IsDamage.Value = true;
         Stats.CurHp.Value -= damage;
+
+        if(Stats.CurHp.Value <= 0)
+        {
+            Stats.IsDied.Value = true;
+        }
     }
 
     private bool CheckIsGround()

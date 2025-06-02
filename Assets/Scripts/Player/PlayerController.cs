@@ -32,8 +32,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        //_stats.CurHp.OnChanged +=
         _stats.IsGround.OnChanged += SetJumpState;
+        _stats.IsDied.OnChanged += Died;
+    }
+
+    private void OnDisable()
+    {
+        _stats.IsGround.OnChanged -= SetJumpState;
+        _stats.IsDied.OnChanged -= Died;
     }
 
     private void SetJumpState(bool value)
@@ -43,12 +49,22 @@ public class PlayerController : MonoBehaviour
             _stateMachine.ChangeState("Jump");
         }
     }
-    private void Died(float curHp)
+    private void Died(bool value)
     {
-        if(curHp <= 0)
+        if (value)
         {
-            
+            _stats.IsControl.Value = false;
+            StartCoroutine(DiedCoroutine());
         }
+    }
+
+    private IEnumerator DiedCoroutine()
+    {
+        yield return new WaitForSeconds(4f);
+        _stats.IsDied.Value = false;
+        Manager.Player.ReturnSafePosition();
+        _stats.CurHp.Value = _stats.MaxHp.Value;
+        _stats.IsControl.Value = true;
     }
 
     void Update()
