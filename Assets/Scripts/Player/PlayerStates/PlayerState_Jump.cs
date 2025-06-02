@@ -22,7 +22,10 @@ public class PlayerState_Jump : PlayerState
 
     public override void Enter()
     {
-        _stats.CurJumpCount++;
+        if(_stats.CurJumpCount == 0)
+        {
+            _stats.CurJumpCount++;
+        }
         _stateChangeDelay = 0.05f;
     }
 
