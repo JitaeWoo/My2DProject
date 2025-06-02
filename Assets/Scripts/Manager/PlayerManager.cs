@@ -43,6 +43,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         if (Stats.CurHp.Value <= 0) return;
 
+        Stats.IsDamage.Value = true;
         Stats.CurHp.Value -= damage;
     }
 
