@@ -40,6 +40,11 @@ public class PlayerManager : Singleton<PlayerManager>
         Transform.position = Stats.LastSafePosition.Value;
     }
 
+    public void TakeDamage(int damage)
+    {
+        Manager.Player.Stats.CurHp.Value -= damage;
+    }
+
     private bool CheckIsGround()
     {
         Vector2 point = Transform.position;
