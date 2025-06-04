@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        _stats.Velocity = _rigid.velocity;
+        _rigid.velocity = _stats.Velocity + _stats.ExternalVelocity;
     }
 
     private void OnEnable()
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (value)
         {
-            _rigid.velocity = new Vector2(_rigid.velocity.x, 0);
+            _rigid.velocity = new Vector2(_stats.Velocity.x, 0);
             _rigid.gravityScale = 0;
             _forceRate = 0;
         }
@@ -69,9 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
         moveVector.y = _rigid.velocity.y;
 
-        moveVector += _stats.ExternalVelocity;
-
-        _rigid.velocity = moveVector;
+        _stats.Velocity = moveVector;
     }
 
     public void Jump()
@@ -79,9 +77,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpVector = Vector2.up * _stats.JumpPower;
         jumpVector.x = _rigid.velocity.x;
 
-        jumpVector += _stats.ExternalVelocity;
-
         _rigid.velocity = jumpVector;
+        _stats.Velocity = _rigid.velocity;
     }
 
     public void Dash(Vector2 direction)
@@ -99,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         _stats.IsControl.Value = false;
         _stats.IsDash.Value = true;
         _rigid.gravityScale = 0;
-        _rigid.velocity = direction * _stats.MoveSpeed * 4;
+        _stats.Velocity = direction * _stats.MoveSpeed * 4;
         yield return new WaitForSeconds(0.2f);
         if (!_stats.IsGround.Value)
         {
@@ -108,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
         _rigid.gravityScale = curGravity;
         // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
-        _rigid.velocity = _rigid.velocity * 0.2f;
+        _rigid.velocity = _stats.Velocity * 0.2f;
         _stats.IsDash.Value = false;
         _stats.IsControl.Value = true;
     }
