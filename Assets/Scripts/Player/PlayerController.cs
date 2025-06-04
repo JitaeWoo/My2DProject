@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
         if (value)
         {
             _stats.IsControl.Value = false;
+            _movement.Stop();
             StartCoroutine(DiedCoroutine());
         }
     }

@@ -81,6 +81,11 @@ public class PlayerMovement : MonoBehaviour
         _stats.Velocity = _rigid.velocity;
     }
 
+    public void Stop()
+    {
+        _stats.Velocity = Vector2.zero;
+    }
+
     public void Dash(Vector2 direction)
     {
         if (_curDashCount < _maxDashCount)
