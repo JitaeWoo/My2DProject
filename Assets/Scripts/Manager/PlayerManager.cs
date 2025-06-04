@@ -34,6 +34,11 @@ public class PlayerManager : Singleton<PlayerManager>
         Transform = transfrom;
     }
 
+    public void ResetPlayerStats()
+    {
+        Stats = Instantiate(_statsTemplate);
+    }
+
     public void ReturnSafePosition()
     {
         Transform.position = Stats.LastSafePosition.Value;

@@ -25,6 +25,7 @@ public class StartButton : MonoBehaviour
 
     private void ClickButton()
     {
+        Manager.Player.ResetPlayerStats();
         SceneManager.LoadScene("Stage");
     }
 }
