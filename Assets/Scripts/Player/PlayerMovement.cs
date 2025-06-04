@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private int _maxDashCount = 1;
     private float _forceRate;
     private float _gravityScale = 3;
+    private bool _isDashCancle;
 
     private void Awake()
     {
@@ -79,6 +80,8 @@ public class PlayerMovement : MonoBehaviour
 
         _rigid.velocity = jumpVector;
         _stats.Velocity = _rigid.velocity;
+
+        _isDashCancle = true;
     }
 
     public void Stop()
@@ -97,20 +100,37 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator DashCoroutine(Vector2 direction)
     {
         float curGravity = _rigid.gravityScale;
+        float dashTime = 0.2f;
+        _isDashCancle = false;
 
         _stats.IsControl.Value = false;
         _stats.IsDash.Value = true;
         _rigid.gravityScale = 0;
         _stats.Velocity = direction * _stats.MoveSpeed * 4;
-        yield return new WaitForSeconds(0.2f);
+
+        while(dashTime > 0f)
+        {
+            if (_isDashCancle)
+            {
+                _rigid.gravityScale = curGravity;
+                break;
+            }
+
+            dashTime -= Time.deltaTime;
+            yield return null;
+        }
+
         if (!_stats.IsGround.Value)
         {
             _curDashCount++;
         }
 
-        _rigid.gravityScale = curGravity;
-        // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
-        _rigid.velocity = _stats.Velocity * 0.2f;
+        if (!_isDashCancle)
+        {
+            _rigid.gravityScale = curGravity;
+            // 대쉬 후 어느정도는 관성이 남는 편이 자연스러워 보였다.
+            _rigid.velocity = _stats.Velocity * 0.2f;
+        }
         _stats.IsDash.Value = false;
         _stats.IsControl.Value = true;
     }
