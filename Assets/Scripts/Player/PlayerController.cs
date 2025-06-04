@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
             _movement.Jump();
         }
 
-        if (_input.DashInput())
+        if (_input.DashInput() && moveInput != Vector2.zero)
         {
             _movement.Dash(moveInput.normalized);
         }
