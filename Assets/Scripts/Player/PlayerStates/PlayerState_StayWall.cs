@@ -12,11 +12,13 @@ public class PlayerState_StayWall : PlayerState
     {
         _input = new PlayerInput();
         _movement = Manager.Player.Transform.GetComponent<PlayerMovement>();
+
     }
 
     public override void Enter()
     {
         _stats.IsWall.Value = true;
+        _stats.IsDash.OnChanged += GoJump;
     }
 
     public override void Update()
@@ -43,5 +45,14 @@ public class PlayerState_StayWall : PlayerState
     public override void Exit()
     {
         _stats.IsWall.Value = false;
+        _stats.IsDash.OnChanged -= GoJump;
+    }
+
+    private void GoJump(bool value)
+    {
+        if (value)
+        {
+            StateMachine.ChangeState("Jump");
+        }
     }
 }
