@@ -6,14 +6,19 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     private CinemachineConfiner2D _confiner;
+    private bool _isInvalidate;
 
     private void Awake()
     {
         _confiner = GetComponent<CinemachineConfiner2D>();
     }
 
-    private void Start()
+    private void LateUpdate()
     {
-        _confiner.InvalidateCache();
+        if (!_isInvalidate)
+        {
+            _confiner.InvalidateCache();
+            _isInvalidate = true;
+        }
     }
 }
