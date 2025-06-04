@@ -17,7 +17,7 @@ public class PlayerState_Idle : PlayerState
 
     public override void Update()
     {
-        if(_input.MoveInput() != Vector2.zero)
+        if(_input.MoveInput().x != 0)
         {
             StateMachine.ChangeState("Walk");
         }
